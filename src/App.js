@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { getPoligono } from './firebase/firestore';
 
+
 function App() {
   getPoligono()
   return (
