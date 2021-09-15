@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import fondo from './assets/fondo.png'
+import Vector from './assets/Vector.png'
 
 function Copyright(props) {
   return (
@@ -55,6 +57,7 @@ export default function SignIn() {
             {/* <LockOutlinedIcon /> 
           </Avatar>*/}
           <Typography component="h1" variant="h5">
+          <img src={Vector} alt="vector" className='vector'  />
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -102,11 +105,14 @@ export default function SignIn() {
                 </Link>
               </Grid>
             </Grid>
+        
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
+       </Container>
+       <img src={fondo} alt="gmail" className='gmail'  />
     </ThemeProvider>
+  
   );
 }
 
