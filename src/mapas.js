@@ -9,7 +9,25 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
     const [lng, setLng] = useState(-74.082);
     const [lat, setLat] = useState(4.610);
     const [zoom, setZoom] = useState(11);
-    const poligono = getPoligono();
+   
+    const callback= (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+              console.log("Add mapa", change.doc.data());
+              //agregar nueva zona en el mapa
+
+          }
+          if (change.type === "modified") {
+              // console.log("Modified city: ", change.doc.data());
+              //actualizar zona, sobre demanda oferta o ubicación
+          }
+          if (change.type === "removed") {
+              // console.log("Removed city: ", change.doc.data());
+              //Quitar zona del mapa
+          }
+      });
+  }
+  const observador = getPoligono(callback);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoibG9yZW5hcnVpeiIsImEiOiJja3RrOHg5cWYwNHZtMnVwZXB2NHgwdTU3In0.XbSDbq4TPHFlPH4mvDiA9A';
   
