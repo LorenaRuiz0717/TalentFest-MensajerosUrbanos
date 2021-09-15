@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+/*import Avatar from '@mui/material/Avatar';*/
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -51,9 +51,9 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> */}
-          </Avatar>
+          {/*<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            {/* <LockOutlinedIcon /> 
+          </Avatar>*/}
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
