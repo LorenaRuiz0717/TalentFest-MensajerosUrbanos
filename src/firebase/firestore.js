@@ -13,7 +13,7 @@ db.collection("Zonas").onSnapshot((querySnapshot) => {
         data.push(cord)
     })
     });
-   console.log(data)
+   return data
 });
 }
 
