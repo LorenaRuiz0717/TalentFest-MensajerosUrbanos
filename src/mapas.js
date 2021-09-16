@@ -79,30 +79,44 @@ function Mapas() {
             }
           });
           
-          console.log(doc.data().mensajeros)
-          if (doc.data().mensajeros > 2) {
-            let color = "#fe382d"; 
-                   
+          let mensajeros = doc.data().mensajeros;
+          let servicios = doc.data().servicios;
+          /* let operacion = (1-(servicios/mensajeros));
+          let operacion2 = -(100*operacion); */
+          let operacion2 = ((servicios/mensajeros)*100);
+          console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
+          console.log(doc.id + 'servicios' + doc.data().servicios)
+          console.log (doc.id,operacion2)
+          if (operacion2 >= 50) {       
               map.current.addLayer({
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
                 'source': 'maine' + doc.id, // reference the data source
                 'layout': {},
                 'paint': {
-                  'fill-color': color, // blue color fill
+                  'fill-color': "#ff2121", // blue color fill
+                  'fill-opacity': 0.5
+                }
+              });
+            }else if(operacion2 >= 25 & operacion2 <50){ 
+              map.current.addLayer({
+                'id': 'outline3' + doc.id,
+                'type': 'fill',
+                'source': 'maine' + doc.id, // reference the data source
+                'layout': {},
+                'paint': {
+                  'fill-color': '#ffee21', // blue color fill
                   'fill-opacity': 0.5
                 }
               });
             }else{
-              let color = "#7a91ff"; 
-                   
               map.current.addLayer({
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
                 'source': 'maine' + doc.id, // reference the data source
                 'layout': {},
                 'paint': {
-                  'fill-color': color, // blue color fill
+                  'fill-color': '#14f803', // blue color fill
                   'fill-opacity': 0.5
                 }
               });
@@ -119,7 +133,7 @@ function Mapas() {
             'layout': {},
             'paint': {
               'line-color': '#689309',
-              'line-width': 2
+              'line-width': 1
             }
           });
         });
