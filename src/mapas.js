@@ -78,51 +78,51 @@ function Mapas() {
               }
             }
           });
-          
+
           let mensajeros = doc.data().mensajeros;
           let servicios = doc.data().servicios;
           /* let operacion = (1-(servicios/mensajeros));
           let operacion2 = -(100*operacion); */
-          let operacion2 = ((servicios/mensajeros)*100);
+          let operacion2 = ((servicios / mensajeros) * 100);
           console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
           console.log(doc.id + 'servicios' + doc.data().servicios)
-          console.log (doc.id,operacion2)
-          if (operacion2 >= 50) {       
-              map.current.addLayer({
-                'id': 'outline3' + doc.id,
-                'type': 'fill',
-                'source': 'maine' + doc.id, // reference the data source
-                'layout': {},
-                'paint': {
-                  'fill-color': "#ff2121", // blue color fill
-                  'fill-opacity': 0.5
-                }
-              });
-            }else if(operacion2 >= 25 & operacion2 <50){ 
-              map.current.addLayer({
-                'id': 'outline3' + doc.id,
-                'type': 'fill',
-                'source': 'maine' + doc.id, // reference the data source
-                'layout': {},
-                'paint': {
-                  'fill-color': '#ffee21', // blue color fill
-                  'fill-opacity': 0.5
-                }
-              });
-            }else{
-              map.current.addLayer({
-                'id': 'outline3' + doc.id,
-                'type': 'fill',
-                'source': 'maine' + doc.id, // reference the data source
-                'layout': {},
-                'paint': {
-                  'fill-color': '#14f803', // blue color fill
-                  'fill-opacity': 0.5
-                }
-              });
-            }
-            
-          
+          console.log(doc.id, operacion2)
+          if (operacion2 >= 50) {
+            map.current.addLayer({
+              'id': 'outline3' + doc.id,
+              'type': 'fill',
+              'source': 'maine' + doc.id, // reference the data source
+              'layout': {},
+              'paint': {
+                'fill-color': "#ff2121", // blue color fill
+                'fill-opacity': 0.5
+              }
+            });
+          } else if (operacion2 >= 25 & operacion2 < 50) {
+            map.current.addLayer({
+              'id': 'outline3' + doc.id,
+              'type': 'fill',
+              'source': 'maine' + doc.id, // reference the data source
+              'layout': {},
+              'paint': {
+                'fill-color': '#ffee21', // blue color fill
+                'fill-opacity': 0.5
+              }
+            });
+          } else {
+            map.current.addLayer({
+              'id': 'outline3' + doc.id,
+              'type': 'fill',
+              'source': 'maine' + doc.id, // reference the data source
+              'layout': {},
+              'paint': {
+                'fill-color': '#14f803', // blue color fill
+                'fill-opacity': 0.5
+              }
+            });
+          }
+
+
 
 
           // Add a black outline around the polygon.
@@ -142,6 +142,28 @@ function Mapas() {
     })
   }, [])
 
+  const monument = [-74.082, 4.610];
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v10',
+    center: monument,
+    zoom: 15
+  });
+
+  // create the popup
+  const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+    'Construction on the Washington Monument began in 1848.'
+  );
+
+  // create DOM element for the marker
+  const el = document.createElement('div');
+  el.id = 'marker';
+
+  // create the marker
+  new mapboxgl.Marker(el)
+    .setLngLat(monument)
+    .setPopup(popup) // sets a popup on this marker
+    .addTo(map);
   /* useEffect(() => {
  map.current.on('load', () => {
    // Add a data source containing GeoJSON data.
