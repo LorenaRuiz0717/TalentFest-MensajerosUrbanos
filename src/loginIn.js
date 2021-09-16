@@ -12,8 +12,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import fondo from './assets/fondo.png'
-import logotype from './assets/logotype.png'
+// import fondo from './assets/fondo.png'
+// import logotype from './assets/logotype.png'
+import fondoLogin from './assets/fondoLogin.png'
 import './formulario.css';
 
 // function Copyright(props) {
@@ -116,9 +117,9 @@ export default function SignIn() {
         </ThemeProvider>
       </div>
       <div className='logo'>
-        <img src={logotype} alt="logotype" width='380px' />
-
-        <img src={fondo} alt="gmail" width='600px' />
+        {/* <img src={logotype} alt="logotype" width='380px'  />
+        <img src={fondo} alt="fondo" width='600px' /> */}
+        <img src={fondoLogin} alt="fondo" width='800px' />
       </div>
     </div>
 
