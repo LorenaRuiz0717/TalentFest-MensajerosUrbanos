@@ -52,118 +52,161 @@ function Mapas() {
 
   useEffect(() => {
     map.current.on('load', () => {
-      const coorden = db.collection("Zonas").onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          /* console.log("Doc´foreach ",doc.id); */
-          let data = [];
-          doc.data().poligono.forEach((coordenada) => {
-            let cord = [];
-            let latitude = coordenada.latitude;
-            let longitude = coordenada.longitude;
-            cord.push(latitude);
-            cord.push(longitude);
-            data.push(cord)
-          })
-          //console.log(JSON.stringify(data))
-          /* console.log('maine' + doc.id); */
-          map.current.addSource('maine' + doc.id, {
-            'type': 'geojson',
-            'data': {
-              'type': 'Feature',
-              'geometry': {
-                'type': 'Polygon',
-                'coordinates': [
-                  data
-                ]
-              }
-            }
-          });
 
-          let mensajeros = doc.data().mensajeros;
-          let servicios = doc.data().servicios;
-          /* let operacion = (1-(servicios/mensajeros));
-          let operacion2 = -(100*operacion); */
-          let operacion2 = ((servicios / mensajeros) * 100);
-          console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
-          console.log(doc.id + 'servicios' + doc.data().servicios)
-          console.log(doc.id, operacion2)
-          if (operacion2 >= 50) {
+
+      // create the popup
+      const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+        'Construction on the Washington Monument began in 1848.'
+      );
+
+      // create DOM element for the marker
+      const el = document.createElement('div');
+      el.id = 'marker';
+
+      // create the marker
+      new mapboxgl.Marker(el)
+        .setLngLat([-74.04045210439463, 4.770416860152286])
+        .setPopup(popup) // sets a popup on this marker
+        .addTo(map.current);
+      const coorden = db.collection("Zonas").onSnapshot((snapshot) => {
+        console.log(snapshot)
+
+        snapshot.docChanges().forEach((change) => {
+          console.log(change)
+          const doc = change.doc
+          if (change.type === "added" || change.type === "modified") {
+            /* console.log("Doc´foreach ",doc.id); */
+            let data = [];
+            doc.data().poligono.forEach((coordenada) => {
+              let cord = [];
+              let latitude = coordenada.latitude;
+              let longitude = coordenada.longitude;
+              cord.push(latitude);
+              cord.push(longitude);
+              data.push(cord)
+
+            })
+            //console.log(JSON.stringify(data))
+            /* console.log('maine' + doc.id); */
+            if (map.current.getSource('maine' + doc.id)) {
+
+              map.current.getSource('maine' + doc.id).setData(
+                {
+                  'type': 'geojson',
+                  'data': {
+                    'type': 'Feature',
+                    'geometry': {
+                      'type': 'Polygon',
+                      'coordinates': [
+                        data
+                      ]
+                    }
+                  }
+                });
+            }
+            else {
+              map.current.addSource('maine' + doc.id, {
+                'type': 'geojson',
+                'data': {
+                  'type': 'Feature',
+                  'geometry': {
+                    'type': 'Polygon',
+                    'coordinates': [
+                      data
+                    ]
+                  }
+                }
+              });
+            }
+
+
+
+
+
+            let mensajeros = doc.data().mensajeros;
+            let servicios = doc.data().servicios;
+            /* let operacion = (1-(servicios/mensajeros));
+            let operacion2 = -(100*operacion); */
+            let operacion2 = ((servicios / mensajeros) * 100);
+            console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
+            console.log(doc.id + 'servicios' + doc.data().servicios)
+            console.log(doc.id, operacion2)
+            if (operacion2 >= 50) {
+              map.current.addLayer({
+                'id': 'outline3' + doc.id,
+                'type': 'fill',
+                'source': 'maine' + doc.id, // reference the data source
+                'layout': {},
+                'paint': {
+                  'fill-color': "#ff2121", // blue color fill
+                  'fill-opacity': 0.5
+                }
+              });
+            } else if (operacion2 >= 25 & operacion2 < 50) {
+              map.current.addLayer({
+                'id': 'outline3' + doc.id,
+                'type': 'fill',
+                'source': 'maine' + doc.id, // reference the data source
+                'layout': {},
+                'paint': {
+                  'fill-color': '#ffee21', // blue color fill
+                  'fill-opacity': 0.5
+                }
+              });
+            } else {
+              map.current.addLayer({
+                'id': 'outline3' + doc.id,
+                'type': 'fill',
+                'source': 'maine' + doc.id, // reference the data source
+                'layout': {},
+                'paint': {
+                  'fill-color': '#14f803', // blue color fill
+                  'fill-opacity': 0.5
+                }
+              });
+            }
+
+
+
+
+            // Add a black outline around the polygon.
             map.current.addLayer({
-              'id': 'outline3' + doc.id,
-              'type': 'fill',
-              'source': 'maine' + doc.id, // reference the data source
+              'id': 'outline4' + doc.id,
+              'type': 'line',
+              'source': 'maine' + doc.id,
               'layout': {},
               'paint': {
-                'fill-color': "#ff2121", // blue color fill
-                'fill-opacity': 0.5
+                'line-color': '#689309',
+                'line-width': 1
               }
             });
-          } else if (operacion2 >= 25 & operacion2 < 50) {
-            map.current.addLayer({
-              'id': 'outline3' + doc.id,
-              'type': 'fill',
-              'source': 'maine' + doc.id, // reference the data source
-              'layout': {},
-              'paint': {
-                'fill-color': '#ffee21', // blue color fill
-                'fill-opacity': 0.5
+            map.current.on('click', 'outline3' + doc.id, (e) => {
+              console.log(e.lngLat.lat)
+              console.log(e.lngLat.lng)
+              // Copy coordinates array.
+              const coordinates = [e.lngLat.lng, e.lngLat.lat];
+              const description = 'prueba';
+
+              // Ensure that if the map is zoomed out such that multiple
+              // copies of the feature are visible, the popup appears
+              // over the copy being pointed to.
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
               }
-            });
-          } else {
-            map.current.addLayer({
-              'id': 'outline3' + doc.id,
-              'type': 'fill',
-              'source': 'maine' + doc.id, // reference the data source
-              'layout': {},
-              'paint': {
-                'fill-color': '#14f803', // blue color fill
-                'fill-opacity': 0.5
-              }
+
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map.current);
             });
           }
-
-
-
-
-          // Add a black outline around the polygon.
-          map.current.addLayer({
-            'id': 'outline4' + doc.id,
-            'type': 'line',
-            'source': 'maine' + doc.id,
-            'layout': {},
-            'paint': {
-              'line-color': '#689309',
-              'line-width': 1
-            }
-          });
         });
         return () => coorden()
       })
     })
   }, [])
 
-  const monument = [-74.082, 4.610];
-  const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/light-v10',
-    center: monument,
-    zoom: 15
-  });
 
-  // create the popup
-  const popup = new mapboxgl.Popup({ offset: 25 }).setText(
-    'Construction on the Washington Monument began in 1848.'
-  );
-
-  // create DOM element for the marker
-  const el = document.createElement('div');
-  el.id = 'marker';
-
-  // create the marker
-  new mapboxgl.Marker(el)
-    .setLngLat(monument)
-    .setPopup(popup) // sets a popup on this marker
-    .addTo(map);
   /* useEffect(() => {
  map.current.on('load', () => {
    // Add a data source containing GeoJSON data.
