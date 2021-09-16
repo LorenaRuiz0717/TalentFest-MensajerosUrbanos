@@ -49,14 +49,12 @@ function Mapas() {
       setZoom(map.current.getZoom().toFixed(2));
     });
   })
-  
+
   useEffect(() => {
     map.current.on('load', () => {
-      
-      
-      const coorden = db.collection("Zonas").onSnapshot((querySnapshot) => {       
+      const coorden = db.collection("Zonas").onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log("Doc´foreach ",doc.id);
+          /* console.log("Doc´foreach ",doc.id); */
           let data = [];
           doc.data().poligono.forEach((coordenada) => {
             let cord = [];
@@ -67,39 +65,61 @@ function Mapas() {
             data.push(cord)
           })
           //console.log(JSON.stringify(data))
-          console.log('maine' + doc.id);
+          /* console.log('maine' + doc.id); */
           map.current.addSource('maine' + doc.id, {
             'type': 'geojson',
             'data': {
               'type': 'Feature',
               'geometry': {
                 'type': 'Polygon',
-                'coordinates':[
-                   data
+                'coordinates': [
+                  data
                 ]
               }
             }
           });
           
-          map.current.addLayer({
-            'id': 'outline3' + doc.id,
-            'type': 'fill',
-            'source': 'maine' + doc.id, // reference the data source
-            'layout': {},
-            'paint': {
-              'fill-color': color, // blue color fill
-              'fill-opacity': 0.5
+          console.log(doc.data().mensajeros)
+          if (doc.data().mensajeros > 2) {
+            let color = "#fe382d"; 
+                   
+              map.current.addLayer({
+                'id': 'outline3' + doc.id,
+                'type': 'fill',
+                'source': 'maine' + doc.id, // reference the data source
+                'layout': {},
+                'paint': {
+                  'fill-color': color, // blue color fill
+                  'fill-opacity': 0.5
+                }
+              });
+            }else{
+              let color = "#7a91ff"; 
+                   
+              map.current.addLayer({
+                'id': 'outline3' + doc.id,
+                'type': 'fill',
+                'source': 'maine' + doc.id, // reference the data source
+                'layout': {},
+                'paint': {
+                  'fill-color': color, // blue color fill
+                  'fill-opacity': 0.5
+                }
+              });
             }
-          });
+            
+          
+
+
           // Add a black outline around the polygon.
           map.current.addLayer({
             'id': 'outline4' + doc.id,
             'type': 'line',
-            'source': 'maine '+ doc.id,
+            'source': 'maine' + doc.id,
             'layout': {},
             'paint': {
-              'line-color': '#000',
-              'line-width': 3
+              'line-color': '#689309',
+              'line-width': 2
             }
           });
         });
@@ -107,63 +127,63 @@ function Mapas() {
       })
     })
   }, [])
-    
-     /* useEffect(() => {
-    map.current.on('load', () => {
-      // Add a data source containing GeoJSON data.
-      map.current.addSource('main', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Polygon',
-            
-            'coordinates': [
-              [
-              [ -74.0721293,4.5753983],
-              [-74.0721293, 4.5753983],
-              [ -74.092052,4.591825 ],
-              [-74.1133487,4.5976428],
-              [-74.1298364,4.6000383],
-              [-74.1356758,4.5966161],
-              [-74.1284624,4.575056],
-              [-74.1229665,4.5569177],
-              [-74.1222795,4.5209818],
-              [-74.1167836,4.4959968],
-              [-74.0951435,4.4939432],
-              [-74.0820907,4.5086606],
-              [-74.0810602,4.5333029],
-              [-74.0838081,4.5521263],
-              [-74.0724728,4.5757405]
-            ]
-          ]
-          }
-        }
-      });
-      map.current.addLayer({
-        'id': 'outline1',
-        'type': 'fill',
-        'source': 'main', // reference the data source
-        'layout': {},
-        'paint': {
-          'fill-color': '#ff0000', // blue color fill
-          'fill-opacity': 0.5
-        }
-      });
-      // Add a black outline around the polygon.
-      map.current.addLayer({
-        'id': 'outline2',
-        'type': 'line',
-        'source': 'main',
-        'layout': {},
-        'paint': {
-          'line-color': '#33ff6e',
-          'line-width': 3
-        }
-      });
-    });
-    }, []);  
- */
+
+  /* useEffect(() => {
+ map.current.on('load', () => {
+   // Add a data source containing GeoJSON data.
+   map.current.addSource('main', {
+     'type': 'geojson',
+     'data': {
+       'type': 'Feature',
+       'geometry': {
+         'type': 'Polygon',
+         
+         'coordinates': [
+           [
+           [ -74.0721293,4.5753983],
+           [-74.0721293, 4.5753983],
+           [ -74.092052,4.591825 ],
+           [-74.1133487,4.5976428],
+           [-74.1298364,4.6000383],
+           [-74.1356758,4.5966161],
+           [-74.1284624,4.575056],
+           [-74.1229665,4.5569177],
+           [-74.1222795,4.5209818],
+           [-74.1167836,4.4959968],
+           [-74.0951435,4.4939432],
+           [-74.0820907,4.5086606],
+           [-74.0810602,4.5333029],
+           [-74.0838081,4.5521263],
+           [-74.0724728,4.5757405]
+         ]
+       ]
+       }
+     }
+   });
+   map.current.addLayer({
+     'id': 'outline1',
+     'type': 'fill',
+     'source': 'main', // reference the data source
+     'layout': {},
+     'paint': {
+       'fill-color': '#ff0000', // blue color fill
+       'fill-opacity': 0.5
+     }
+   });
+   // Add a black outline around the polygon.
+   map.current.addLayer({
+     'id': 'outline2',
+     'type': 'line',
+     'source': 'main',
+     'layout': {},
+     'paint': {
+       'line-color': '#33ff6e',
+       'line-width': 3
+     }
+   });
+ });
+ }, []);  
+*/
 
 
   return (
