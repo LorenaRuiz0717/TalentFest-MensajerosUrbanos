@@ -2,8 +2,13 @@ import './App.css';
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import { db } from './firebase/firebaseConfig';
+import logotype from './assets/logotype.png'
+import Button from '@mui/material/Button';
+import Swal from 'sweetalert2';
 import Box from './box.png'
 import Helmet from './Helmet.png'
+import { auth } from './firebase/firebaseConfig';
+import { useHistory } from 'react-router-dom'
 
 function Mapas() {
   const mapContainer = useRef(null);
@@ -72,11 +77,11 @@ function Mapas() {
         .addTo(map.current);
       const coorden = db.collection("Zonas").onSnapshot((snapshot) => {
         console.log(snapshot)
- 
+
         snapshot.docChanges().forEach((change) => {
           console.log(change)
           const doc = change.doc
-        
+
           if (change.type === "added") {
             /* console.log("Doc´foreach ",doc.id); */
             let data = [];
@@ -136,7 +141,7 @@ function Mapas() {
             if (operacion2 >= 50) {
 
               map.current.addLayer({
-                
+
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
                 'source': 'maine' + doc.id, // reference the data source
@@ -192,15 +197,15 @@ function Mapas() {
                 });
             }
 
-            
-            map.current.on( 'click', 'outline3' + doc.id, (e) => {
+
+            map.current.on('click', 'outline3' + doc.id, (e) => {
               console.log(e.lngLat.lat)
               console.log(e.lngLat.lng)
               // Copy coordinates array.
               const coordinates = [e.lngLat.lng, e.lngLat.lat];
               // const coordinates2 = [-74.3761,4.7550];
-              const description = doc.id +`<br>` + `<br>` + `<img src='${Box}'> \n` +'Mensajeros: ' + doc.data().mensajeros + `<br>` + `<br>` + `<img src='${Helmet}'> \n` + 'Servicios: ' + doc.data().servicios +  `<br>` + `<br>`  + 'Ocupación al' + `\n` + intPorcentaje + '%';
-              
+              const description = doc.id + `<br>` + `<br>` + `<img src='${Box}'> \n` + 'Mensajeros: ' + doc.data().mensajeros + `<br>` + `<br>` + `<img src='${Helmet}'> \n` + 'Servicios: ' + doc.data().servicios + `<br>` + `<br>` + 'Ocupación al' + `\n` + intPorcentaje + '%';
+
               // Ensure that if the map is zoomed out such that multiple
               // copies of the feature are visible, the popup appears
               // over the copy being pointed to.
@@ -334,13 +339,40 @@ function Mapas() {
   }, []);  
   */
 
+  const logout = () => {
+    auth.signOut()
+      .then(() => {
+        history.push('/')
+      })
+  }
+
+  const history = useHistory();
+  const mostrarAlerta = () => {
+
+
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Se han enviado alerta de alta demanda',
+      showConfirmButton: false,
+      timer: 3500
+    })
+  }
+
 
   return (
     <div>
-      <div className="sidebar">
-        Longitud: {lng} | Latitud: {lat} | Zoom: {zoom}
+      <div className='logoMapa'>
+        <img src={logotype} alt="logotype" width='200px' />
+        <Button variant="outlined" sx={{ mt: 2, mb: 2 }} color="error" onClick={() => mostrarAlerta()} >Enviar Mensajes</Button>
+        {/* <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={() => mostrarAlerta()}>Enviar Mensajes</Button> */}
+        <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
       </div>
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} className="map-container">
+        <h4 className="sidebar">
+          Longitud: {lng} | Latitud: {lat} | Zoom: {zoom}
+        </h4>
+      </div>
     </div>
   );
 }
