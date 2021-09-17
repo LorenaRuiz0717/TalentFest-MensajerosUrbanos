@@ -16,6 +16,14 @@ function Mapas() {
   const [lng, setLng] = useState(-74.082);
   const [lat, setLat] = useState(4.610);
   const [zoom, setZoom] = useState(11);
+  /* let pointsRed = [];
+  let pointsYellow = [];
+  let pointsGreen = []; */
+
+  const [pointsRed, setPointsRed] = useState([]);
+  const [pointsYellow, setPointsYellow] = useState([]);
+  const [pointsGreen, setPointsGreen] = useState([]);
+
 
   /* const callback = (snapshot) => {
     snapshot.docChanges().forEach((change) => {
@@ -75,16 +83,18 @@ function Mapas() {
         .setLngLat([-74.04045210439463, 4.770416860152286])
         .setPopup(popup) // sets a popup on this marker
         .addTo(map.current);
+        
       const coorden = db.collection("Zonas").onSnapshot((snapshot) => {
         console.log(snapshot)
-
         snapshot.docChanges().forEach((change) => {
           console.log(change)
           const doc = change.doc
 
+
           if (change.type === "added") {
             /* console.log("Doc´foreach ",doc.id); */
             let data = [];
+            
             doc.data().poligono.forEach((coordenada) => {
               let cord = [];
               let latitude = coordenada.latitude;
@@ -139,7 +149,7 @@ function Mapas() {
             console.log(doc.id + 'servicios' + doc.data().servicios)
             console.log(doc.id, operacion2)
             if (operacion2 >= 50) {
-
+              pointsRed.push('outline3' + doc.id);
               map.current.addLayer({
 
                 'id': 'outline3' + doc.id,
@@ -154,7 +164,7 @@ function Mapas() {
 
 
             } else if (operacion2 >= 25 & operacion2 < 50) {
-
+              pointsYellow.push('outline3' + doc.id);
               map.current.addLayer({
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
@@ -167,7 +177,7 @@ function Mapas() {
               });
 
             } else {
-
+              pointsGreen.push('outline3' + doc.id);
               map.current.addLayer({
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
@@ -250,29 +260,62 @@ function Mapas() {
             /* let operacion = (1-(servicios/mensajeros));
             let operacion2 = -(100*operacion); */
             let operacion2 = ((servicios / mensajeros) * 100);
+            let intPorcentaje = Math.round(operacion2)
             console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
             console.log(doc.id + 'servicios' + doc.data().servicios)
             console.log(doc.id, operacion2)
+            let indexRed =pointsRed.indexOf('outline3' + doc.id)
+            let indexYellow = pointsYellow.indexOf('outline3' + doc.id)
+            let indexGreen = pointsGreen.indexOf('outline3' + doc.id)
+            if(indexRed > (-1)){
+              pointsRed.splice(indexRed, 1)
+            }else if(indexYellow > (-1)){
+              pointsYellow.splice(indexYellow, 1)
+            }else {
+              pointsGreen.splice(indexGreen, 1)
+            }
             if (operacion2 >= 50) {
 
+              pointsRed.push('outline3' + doc.id);
               map.current.setPaintProperty('outline3' + doc.id, 'fill-color', "#ff2121");
               map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
             } else if (operacion2 >= 25 & operacion2 < 50) {
-
+              pointsYellow.push('outline3' + doc.id);
               map.current.setPaintProperty('outline3' + doc.id, 'fill-color', '#ffee21');
               map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
             } else {
-
+              pointsGreen.push('outline3' + doc.id);
               map.current.setPaintProperty('outline3' + doc.id, 'fill-color', '#14f803');
               map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
             }
+            map.current.on('click', 'outline3' + doc.id, (e) => {
+              console.log(e.lngLat.lat)
+              console.log(e.lngLat.lng)
+              // Copy coordinates array.
+              const coordinates = [e.lngLat.lng, e.lngLat.lat];
+              // const coordinates2 = [-74.3761,4.7550];
+              const description = doc.id + `<br>` + `<br>` + `<img src='${Box}'> \n` + 'Mensajeros: ' + doc.data().mensajeros + `<br>` + `<br>` + `<img src='${Helmet}'> \n` + 'Servicios: ' + doc.data().servicios + `<br>` + `<br>` + 'Ocupación al' + `\n` + intPorcentaje + '%';
+
+              // Ensure that if the map is zoomed out such that multiple
+              // copies of the feature are visible, the popup appears
+              // over the copy being pointed to.
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map.current);
+            });
           }
+          console.log('Point: ' + pointsRed.length, pointsYellow.length, pointsGreen.length)
         });
         return () => coorden()
       })
@@ -364,9 +407,14 @@ function Mapas() {
     <div>
       <div className='logoMapa'>
         <img src={logotype} alt="logotype" width='200px' />
-        <Button variant="outlined" sx={{ mt: 2, mb: 2 }} color="error" onClick={() => mostrarAlerta()} >Enviar Mensajes</Button>
+        <Button variant="outlined" sx={{ mt: 2, mb: 2 }} color="error"onClick={() => mostrarAlerta()} > Cantidad:{pointsRed}Enviar Msm</Button>
         {/* <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={() => mostrarAlerta()}>Enviar Mensajes</Button> */}
+        <h3 onChange={() => setPointsRed(pointsRed)}> {pointsRed.length}</h3>
+        <h3 onChange={() => setPointsYellow(pointsYellow)}> {pointsYellow.length}</h3>
+        <h3 onChange={() => setPointsGreen(pointsGreen)}> {pointsGreen.length}</h3>
+
         <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
+      
       </div>
       <div ref={mapContainer} className="map-container">
         <h4 className="sidebar">
