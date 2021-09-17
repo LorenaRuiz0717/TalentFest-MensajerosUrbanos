@@ -83,16 +83,18 @@ function Mapas() {
         .setLngLat([-74.04045210439463, 4.770416860152286])
         .setPopup(popup) // sets a popup on this marker
         .addTo(map.current);
+        
       const coorden = db.collection("Zonas").onSnapshot((snapshot) => {
         console.log(snapshot)
-
         snapshot.docChanges().forEach((change) => {
           console.log(change)
           const doc = change.doc
 
+
           if (change.type === "added") {
             /* console.log("Doc´foreach ",doc.id); */
             let data = [];
+            
             doc.data().poligono.forEach((coordenada) => {
               let cord = [];
               let latitude = coordenada.latitude;
@@ -291,7 +293,28 @@ function Mapas() {
 
 
             }
+            map.current.on('click', 'outline3' + doc.id, (e) => {
+              console.log(e.lngLat.lat)
+              console.log(e.lngLat.lng)
+              // Copy coordinates array.
+              const coordinates = [e.lngLat.lng, e.lngLat.lat];
+              // const coordinates2 = [-74.3761,4.7550];
+              const description = doc.id + `<br>` + `<br>` + `<img src='${Box}'> \n` + 'Mensajeros: ' + doc.data().mensajeros + `<br>` + `<br>` + `<img src='${Helmet}'> \n` + 'Servicios: ' + doc.data().servicios + `<br>` + `<br>` + 'Ocupación al' + `\n` + intPorcentaje + '%';
+
+              // Ensure that if the map is zoomed out such that multiple
+              // copies of the feature are visible, the popup appears
+              // over the copy being pointed to.
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map.current);
+            });
           }
+          console.log('Point: ' + pointsRed.length, pointsYellow.length, pointsGreen.length)
         });
         return () => coorden()
       })
