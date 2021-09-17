@@ -2,6 +2,8 @@ import './App.css';
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import { db } from './firebase/firebaseConfig';
+import Box from './box.png'
+import Helmet from './Helmet.png'
 
 function Mapas() {
   const mapContainer = useRef(null);
@@ -61,7 +63,7 @@ function Mapas() {
 
       // create DOM element for the marker
       const el = document.createElement('div');
-      el.id = 'marker';
+      el.id = '';
 
       // create the marker
       new mapboxgl.Marker(el)
@@ -70,7 +72,7 @@ function Mapas() {
         .addTo(map.current);
       const coorden = db.collection("Zonas").onSnapshot((snapshot) => {
         console.log(snapshot)
-
+ 
         snapshot.docChanges().forEach((change) => {
           console.log(change)
           const doc = change.doc
@@ -127,6 +129,7 @@ function Mapas() {
             /* let operacion = (1-(servicios/mensajeros));
             let operacion2 = -(100*operacion); */
             let operacion2 = ((servicios / mensajeros) * 100);
+            let intPorcentaje = Math.round(operacion2)
             console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
             console.log(doc.id + 'servicios' + doc.data().servicios)
             console.log(doc.id, operacion2)
@@ -188,13 +191,15 @@ function Mapas() {
 
                 });
             }
+
+            
             map.current.on( 'click', 'outline3' + doc.id, (e) => {
               console.log(e.lngLat.lat)
               console.log(e.lngLat.lng)
               // Copy coordinates array.
               const coordinates = [e.lngLat.lng, e.lngLat.lat];
               const coordinates2 = [-74.3761,4.7550];
-              const description = doc.id + 'Mensajeros: ' + doc.data().mensajeros + '\n Servicios: ' + doc.data().servicios;
+              const description = doc.id +`<br>` + `<br>` + `<img src='${Box}'> \n` +'Mensajeros: ' + doc.data().mensajeros + `<br>` + `<br>` + `<img src='${Helmet}'> \n` + 'Servicios: ' + doc.data().servicios +  `<br>` + `<br>`  + 'Ocupación al' + `\n` + intPorcentaje + '%';
               
               // Ensure that if the map is zoomed out such that multiple
               // copies of the feature are visible, the popup appears
@@ -204,7 +209,7 @@ function Mapas() {
               }
 
               new mapboxgl.Popup()
-                .setLngLat(coordinates2)
+                .setLngLat(coordinates)
                 .setHTML(description)
                 .addTo(map.current);
             });
@@ -336,7 +341,6 @@ function Mapas() {
         Longitud: {lng} | Latitud: {lat} | Zoom: {zoom}
       </div>
       <div ref={mapContainer} className="map-container" />
-
     </div>
   );
 }
