@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useCallback, useContext } from 'react';
+import { withRouter, Redirect } from 'react-router';
 /*import Avatar from '@mui/material/Avatar';*/
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,6 +18,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import logotype from './assets/logotype.png'
 import fondoLogin from './assets/fondoLogin.png'
 import './formulario.css';
+import { auth } from './firebase/firebaseConfig';
+import { AuthContext } from './firebase/firebaseAuth';
 
 // function Copyright(props) {
 //   return (
@@ -32,20 +36,42 @@ import './formulario.css';
 
 const theme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
+function SignIn({ history }) {
+  const handleSubmit = useCallback(async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
+    const formData =({
       email: data.get('email'),
       password: data.get('password'),
-    });
-  };
+      });
+    try {
+      await auth.signInWithEmailAndPassword(formData.email, formData.password);
+      history.push('/Monitoreo');
+    } catch (error) {
+      alert(error);
+    }
+  }, [history]);
+
+  const { currentUser } = useContext(AuthContext);
+  
+  if(currentUser){
+    return <Redirect to='/Monitoreo' />;
+  }
+  // (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   const formData =({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  //   // eslint-disable-next-line no-console
+  //   console.log(formData);
+  // };
 
   return (
     <div className='container'>
       <div className='formulario'>
+        <h1>hola titulo</h1>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -79,7 +105,7 @@ export default function SignIn() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Hola"
                   type="password"
                   id="password"
                   autoComplete="current-password"
@@ -126,4 +152,4 @@ export default function SignIn() {
   );
 }
 
-// export default Copyright;
+export default withRouter(SignIn);
