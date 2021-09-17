@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/TalentFest-MensajerosUrbanos/static/css/main.aba50087.chunk.css",
+    "main.js": "/TalentFest-MensajerosUrbanos/static/js/main.a0646012.chunk.js",
+    "main.js.map": "/TalentFest-MensajerosUrbanos/static/js/main.a0646012.chunk.js.map",
+    "runtime-main.js": "/TalentFest-MensajerosUrbanos/static/js/runtime-main.7c3a0242.js",
+    "runtime-main.js.map": "/TalentFest-MensajerosUrbanos/static/js/runtime-main.7c3a0242.js.map",
+    "static/css/2.9345dda6.chunk.css": "/TalentFest-MensajerosUrbanos/static/css/2.9345dda6.chunk.css",
+    "static/js/2.e1fd15b9.chunk.js": "/TalentFest-MensajerosUrbanos/static/js/2.e1fd15b9.chunk.js",
+    "static/js/2.e1fd15b9.chunk.js.map": "/TalentFest-MensajerosUrbanos/static/js/2.e1fd15b9.chunk.js.map",
+    "index.html": "/TalentFest-MensajerosUrbanos/index.html",
+    "static/css/2.9345dda6.chunk.css.map": "/TalentFest-MensajerosUrbanos/static/css/2.9345dda6.chunk.css.map",
+    "static/css/main.aba50087.chunk.css.map": "/TalentFest-MensajerosUrbanos/static/css/main.aba50087.chunk.css.map",
+    "static/js/2.e1fd15b9.chunk.js.LICENSE.txt": "/TalentFest-MensajerosUrbanos/static/js/2.e1fd15b9.chunk.js.LICENSE.txt",
+    "static/media/fondoLogin.87ef336c.png": "/TalentFest-MensajerosUrbanos/static/media/fondoLogin.87ef336c.png",
+    "static/media/logotype.8cbafefd.png": "/TalentFest-MensajerosUrbanos/static/media/logotype.8cbafefd.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7c3a0242.js",
+    "static/css/2.9345dda6.chunk.css",
+    "static/js/2.e1fd15b9.chunk.js",
+    "static/css/main.aba50087.chunk.css",
+    "static/js/main.a0646012.chunk.js"
+  ]
+}
