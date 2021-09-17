@@ -4,6 +4,8 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import { db } from './firebase/firebaseConfig';
 import logotype from './assets/logotype.png'
 import Button from '@mui/material/Button';
+import { auth } from './firebase/firebaseConfig';
+import { useHistory } from 'react-router-dom'
 
 function Mapas() {
   const mapContainer = useRef(null);
@@ -32,7 +34,16 @@ function Mapas() {
   } */
 
   mapboxgl.accessToken = 'pk.eyJ1IjoibG9yZW5hcnVpeiIsImEiOiJja3RrOHg5cWYwNHZtMnVwZXB2NHgwdTU3In0.XbSDbq4TPHFlPH4mvDiA9A';
+  
+  //logout 
+  const logout = () => {
+    auth.signOut()
+      .then(() => {
+        history.push('/')
+      })
+  }
 
+  const history = useHistory();
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -344,11 +355,15 @@ function Mapas() {
 
   return (
     <div>
-      <div className="sidebar">
+      <div className='logoMapa'>
+          <img src={logotype} alt="logotype" width='200px' />
+          <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
+        </div>    
+        <div ref={mapContainer} className="map-container">
+        <h4 className="sidebar">
         Longitud: {lng} | Latitud: {lat} | Zoom: {zoom}
-      </div>
-      <div ref={mapContainer} className="map-container" />
-
+        </h4>
+        </div>
     </div>
   );
 }

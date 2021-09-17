@@ -1,38 +1,17 @@
 import * as React from 'react';
 import { useCallback, useContext } from 'react';
 import { withRouter, Redirect } from 'react-router';
-/*import Avatar from '@mui/material/Avatar';*/
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
-// import Link from '@mui/material/Link';
-// import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import fondo from './assets/fondo.png'
-// import logotype from './assets/logotype.png'
 import fondoLogin from './assets/fondoLogin.png'
 import './formulario.css';
 import { auth } from './firebase/firebaseConfig';
 import { AuthContext } from './firebase/firebaseAuth';
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
 
 const theme = createTheme();
 
@@ -53,25 +32,14 @@ function SignIn({ history }) {
   }, [history]);
 
   const { currentUser } = useContext(AuthContext);
-  
+
   if(currentUser){
     return <Redirect to='/Monitoreo' />;
   }
-  // (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   const formData =({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  //   // eslint-disable-next-line no-console
-  //   console.log(formData);
-  // };
 
   return (
     <div className='container'>
       <div className='formulario'>
-        <h1>hola titulo</h1>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -83,9 +51,6 @@ function SignIn({ history }) {
                 alignItems: 'center',
               }}
             >
-              {/*<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> 
-          </Avatar>*/}
               <Typography component="h1" variant="h5">
                 Iniciar Sesion
               </Typography>
@@ -105,15 +70,11 @@ function SignIn({ history }) {
                   required
                   fullWidth
                   name="password"
-                  label="Hola"
+                  label="password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
                 />
-                {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
                 <Button
                   type="submit"
                   fullWidth
@@ -122,29 +83,12 @@ function SignIn({ history }) {
                 >
                 Iniciar Sesion
                 </Button>
-                {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
-
               </Box>
             </Box>
-            {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
           </Container>
-
         </ThemeProvider>
       </div>
       <div className='logo'>
-        {/* <img src={logotype} alt="logotype" width='380px'  />
-        <img src={fondo} alt="fondo" width='600px' /> */}
         <img src={fondoLogin} alt="fondo" width='800px' />
       </div>
     </div>
