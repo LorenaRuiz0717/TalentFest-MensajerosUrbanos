@@ -330,9 +330,24 @@ function Mapas() {
         history.push('/')
       })
   }
-
   const history = useHistory();
 
+  const mostrarAlert=()=>{
+    Swal.fire({
+      title: '¿Desea enviar notificación a Aliados Urbanos?',
+      showCancelButton: true,
+      confirmButtonText: 'Eviar Msm',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire('¡Mensajes Enviados!', '', 'success')
+        {/* <ReactWhatsapp number="+573004305325" message="Alerta de zona" element={Button} >Enviar Alerta/> */}
+      }
+    })
+  }
+  
+
+  
   return (
     <div>
       <div className='logoMapa'>
@@ -354,8 +369,8 @@ function Mapas() {
         <Alert severity="success">
           <strong><h3 onChange={() => setPointsGreen(pointsGreen)}> {pointsGreen.length}</h3></strong>
         </Alert>
-        
-        <ReactWhatsapp number="+573004305325" message="Alerta de zona" element={Button} >Enviar Alerta</ReactWhatsapp>
+        <Button onClick={()=>mostrarAlert()}>Enviar msm</Button>
+        <ReactWhatsapp number="+573004305325" message="Hola Mensajero Urbano te notificamos que la zona 6 te necesita, recuerda que tienes un incentivo del 5% en tu viaje." element={Button} >Enviar Alerta</ReactWhatsapp>
         <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
         </div>
       </div>
