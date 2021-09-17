@@ -193,8 +193,9 @@ function Mapas() {
               console.log(e.lngLat.lng)
               // Copy coordinates array.
               const coordinates = [e.lngLat.lng, e.lngLat.lat];
-              const description = 'prueba';
-
+              const coordinates2 = [-74.3761,4.7550];
+              const description = doc.id + 'Mensajeros: ' + doc.data().mensajeros + '\n Servicios: ' + doc.data().servicios;
+              
               // Ensure that if the map is zoomed out such that multiple
               // copies of the feature are visible, the popup appears
               // over the copy being pointed to.
@@ -203,7 +204,7 @@ function Mapas() {
               }
 
               new mapboxgl.Popup()
-                .setLngLat(coordinates)
+                .setLngLat(coordinates2)
                 .setHTML(description)
                 .addTo(map.current);
             });

@@ -28,6 +28,10 @@
       max-width: 200px;
       } */
       .mapboxgl-popup {
-        max-width: 400px;
+        max-width: 1500px;
         font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
+      .mapboxgl-popup mapboxgl-popup-anchor-left {
+          max-width: 500px;
+          font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+          }
