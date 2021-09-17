@@ -15,6 +15,7 @@
   align-content: center;
   font-family: monospace;
   color: rgba(35, 55, 75, 0.9);
+  height: 85px;
 }
 .sidebar {
   background-color: rgba(35, 55, 75, 0.9);
@@ -54,4 +55,13 @@
 }
 .alert{
   display: flex;
+}
+
+span{
+  padding: 0px 10px ;
+}
+
+.boton{
+  justify-content: space-between;
+  margin: 5px 
 }

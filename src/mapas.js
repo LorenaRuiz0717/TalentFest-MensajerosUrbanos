@@ -83,7 +83,7 @@ function Mapas() {
         .setLngLat([-74.04045210439463, 4.770416860152286])
         .setPopup(popup) // sets a popup on this marker
         .addTo(map.current);
-        
+
       const coorden = db.collection("Zonas").onSnapshot((snapshot) => {
         console.log(snapshot)
         snapshot.docChanges().forEach((change) => {
@@ -94,7 +94,7 @@ function Mapas() {
           if (change.type === "added") {
             /* console.log("Doc´foreach ",doc.id); */
             let data = [];
-            
+
             doc.data().poligono.forEach((coordenada) => {
               let cord = [];
               let latitude = coordenada.latitude;
@@ -260,18 +260,18 @@ function Mapas() {
             /* let operacion = (1-(servicios/mensajeros));
             let operacion2 = -(100*operacion); */
             let operacion2 = ((servicios / mensajeros) * 100);
-            let intPorcentaje = Math.round(operacion2)           
+            let intPorcentaje = Math.round(operacion2)
             console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
             console.log(doc.id + 'servicios' + doc.data().servicios)
             console.log(doc.id, operacion2)
-            let indexRed =pointsRed.indexOf('outline3' + doc.id)
+            let indexRed = pointsRed.indexOf('outline3' + doc.id)
             let indexYellow = pointsYellow.indexOf('outline3' + doc.id)
             let indexGreen = pointsGreen.indexOf('outline3' + doc.id)
-            if(indexRed > (-1)){
+            if (indexRed > (-1)) {
               pointsRed.splice(indexRed, 1)
-            }else if(indexYellow > (-1)){
+            } else if (indexYellow > (-1)) {
               pointsYellow.splice(indexYellow, 1)
-            }else {
+            } else {
               pointsGreen.splice(indexGreen, 1)
             }
             if (operacion2 >= 50) {
@@ -336,27 +336,41 @@ function Mapas() {
   return (
     <div>
       <div className='logoMapa'>
-        <img src={logotype} alt="logotype" width='200px' />
-          <div className='alert'>
-        <div>
-          <h3>Bog-Col</h3>
-          <h3>Ciudad</h3>
-        </div>
-      
-        <Alert severity="error">
-          <AlertTitle></AlertTitle>
-          <strong><h3 onChange={() => setPointsRed(pointsRed)}> {pointsRed.length}</h3></strong>
-        </Alert>
-        <Alert severity="warning">
-          <AlertTitle></AlertTitle>
-          <strong> <h3 onChange={() => setPointsYellow(pointsYellow)}> {pointsYellow.length}</h3></strong>
-        </Alert>
-        <Alert severity="success">
-          <strong><h3 onChange={() => setPointsGreen(pointsGreen)}> {pointsGreen.length}</h3></strong>
-        </Alert>
-        
-        <ReactWhatsapp number="+573004305325" message="Alerta de zona" element={Button} >Enviar Alerta</ReactWhatsapp>
-        <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
+        <img src={logotype} alt="logotype" width='auto' height='80px' />
+        <div className='alert'>
+          <span>
+            <h2>BOG-COL</h2>
+            <h3>Ciudad</h3>
+          </span>
+          <span>
+            <Alert severity="error" >
+              <AlertTitle></AlertTitle>
+              <strong><h3 onChange={() => setPointsRed(pointsRed)}> {pointsRed.length}</h3></strong>
+            </Alert>
+          </span>
+          <span>
+            <Alert severity="warning">
+              <AlertTitle></AlertTitle>
+              <strong> <h3 onChange={() => setPointsYellow(pointsYellow)}> {pointsYellow.length}</h3></strong>
+            </Alert>
+          </span>
+          <span>
+            <Alert severity="success">
+              <strong><h3 onChange={() => setPointsGreen(pointsGreen)}> {pointsGreen.length}</h3></strong>
+            </Alert>
+          </span>
+          <span className='boton'>
+            <ReactWhatsapp number="+573004305325" message=" Hola *Mensajero Urbano* en la zona 6 te necesita.
+Recuerda que tienes un incentivo del *10%* para realizar servicios en esta zona.
+
+ Gracias por ayudarnos a cubrir esta zona.
+
+Ingresa aquí y ve a la zona https://bit.ly/2XAsGYi
+" element={Button} variant="outlined" color="error" sx={{ mt: 2, mb: 2 }}>Enviar Alerta</ReactWhatsapp>
+            <span>
+              <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesiòn</Button>
+            </span>
+          </span>
         </div>
       </div>
       <div ref={mapContainer} className="map-container">
