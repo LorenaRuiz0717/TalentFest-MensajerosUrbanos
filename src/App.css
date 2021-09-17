@@ -1,33 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap");
 /* @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;400&display=swap'); */
 
-
 .map-container {
-  height:100vh;
-  }
+  height: 100vh;
+  display: flex;
+}
+.logoMapa {
+  display: flex;
+  box-shadow: 0.2em 0.3em 0.3em rgb(0, 0, 0);
+  border: 0.1em solid #d6d6d6;
+  border-radius: 1em;
+  margin: 5px;
+  justify-content: space-between;
+  align-content: center;
+  font-family: monospace;
+  color: rgba(35, 55, 75, 0.9);
+  height: 85px;
+}
+.sidebar {
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #fff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
+}
+#marker {
+  background-image: url("https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg");
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
 
-  .sidebar {
-    background-color: rgba(35, 55, 75, 0.9);
-    color: #fff;
-    padding: 6px 12px;
-    font-family: monospace;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 12px;
-    border-radius: 4px;
-    }
-  #marker {
-      background-image: url('https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg');
-      background-size: cover;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      cursor: pointer;
-      }
-       
-    /* .mapboxgl-popup {
+/* .mapboxgl-popup {
       max-width: 200px;
       } */
 
@@ -38,8 +49,19 @@
   width: 220px;
   font-size: 20px;
   box-shadow: 0.2em 0.3em 0.3em rgb(0, 0, 0);
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   font-weight: 700;
-  color: #69696B;
+  color: #69696b;
+}
+.alert{
+  display: flex;
 }
 
+span{
+  padding: 0px 10px ;
+}
+
+.boton{
+  justify-content: space-between;
+  margin: 5px 
+}
