@@ -1,0 +1,26 @@
+.container {
+  display: grid;
+  grid-column-gap: 50px;
+  grid-template-columns: auto auto;
+}
+
+.logo {
+  grid-column-start: 3;
+  grid-column-end: 3;
+  font-size: 3em;
+  margin-top: 8px
+  
+
+}
+.formulario {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start:1;
+  grid-row-end: 1;
+  font-size: 12px;
+  margin: 72px ;
+  box-shadow: 0.2em 0.3em 0.3em rgb(0, 0, 0);
+  border: 0.1em solid #d6d6d6;
+  border-radius: 1em;
+}
+

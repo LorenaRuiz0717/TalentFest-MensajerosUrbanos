@@ -1,5 +1,7 @@
 import firebase from "firebase/app";
+import 'firebase/auth';
 import "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCE_ppoYK55IzQzZh94vAOisbL4NUUXC_o",
   authDomain: "talentfest-mensajeros-urbanos.firebaseapp.com",
@@ -10,5 +12,5 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 const fb =firebase.initializeApp(firebaseConfig);
+export const auth = fb.auth();
 export const db = fb.firestore();
-export default fb;

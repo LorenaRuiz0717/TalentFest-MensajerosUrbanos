@@ -198,7 +198,7 @@ function Mapas() {
               console.log(e.lngLat.lng)
               // Copy coordinates array.
               const coordinates = [e.lngLat.lng, e.lngLat.lat];
-              const coordinates2 = [-74.3761,4.7550];
+              // const coordinates2 = [-74.3761,4.7550];
               const description = doc.id +`<br>` + `<br>` + `<img src='${Box}'> \n` +'Mensajeros: ' + doc.data().mensajeros + `<br>` + `<br>` + `<img src='${Helmet}'> \n` + 'Servicios: ' + doc.data().servicios +  `<br>` + `<br>`  + 'Ocupación al' + `\n` + intPorcentaje + '%';
               
               // Ensure that if the map is zoomed out such that multiple

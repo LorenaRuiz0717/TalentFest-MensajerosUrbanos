@@ -1,19 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, }
-   from 'react-router-dom';
+    from 'react-router-dom';
 import SignIn from './loginIn'
 import Mapas from './mapas'
-// import PrivateRoute from './components/PrivateRoute';
+import { AuthProvider } from './firebase/firebaseAuth';
+
+import PrivateRoute from './PrivateRoute';
 
 const App = () => {
- 
 
   return (
-    <Router>
+   <AuthProvider>
+      <Router>
         <Route exact  path='/' component={SignIn} />
-        <Route path='/Monitoreo' component={Mapas} />
-    </Router>
-  
+        <PrivateRoute path='/Monitoreo' component={Mapas} />
+      </Router>
+     </AuthProvider> 
   );
 };
 export default App;
