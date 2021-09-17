@@ -3,6 +3,7 @@
 
 .map-container {
   height: 100vh;
+  display: flex;
 }
 .logoMapa {
   display: flex;
@@ -50,4 +51,7 @@
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   color: #69696b;
+}
+.alert{
+  display: flex;
 }

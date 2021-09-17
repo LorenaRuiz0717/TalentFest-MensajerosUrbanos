@@ -21,6 +21,9 @@ function Mapas() {
   const [lng, setLng] = useState(-74.082);
   const [lat, setLat] = useState(4.610);
   const [zoom, setZoom] = useState(11);
+  const [pointsRed, setPointsRed] = useState([]);
+  const [pointsYellow, setPointsYellow] = useState([]);
+  const [pointsGreen, setPointsGreen] = useState([]);
 
   /* const callback = (snapshot) => {
     snapshot.docChanges().forEach((change) => {
@@ -144,7 +147,7 @@ function Mapas() {
             console.log(doc.id + 'servicios' + doc.data().servicios)
             console.log(doc.id, operacion2)
             if (operacion2 >= 50) {
-
+              pointsRed.push('outline3' + doc.id);
               map.current.addLayer({
 
                 'id': 'outline3' + doc.id,
@@ -159,7 +162,7 @@ function Mapas() {
 
 
             } else if (operacion2 >= 25 & operacion2 < 50) {
-
+              pointsYellow.push('outline3' + doc.id);
               map.current.addLayer({
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
@@ -172,7 +175,7 @@ function Mapas() {
               });
 
             } else {
-
+              pointsGreen.push('outline3' + doc.id);
               map.current.addLayer({
                 'id': 'outline3' + doc.id,
                 'type': 'fill',
@@ -255,23 +258,34 @@ function Mapas() {
             /* let operacion = (1-(servicios/mensajeros));
             let operacion2 = -(100*operacion); */
             let operacion2 = ((servicios / mensajeros) * 100);
+            let intPorcentaje = Math.round(operacion2)           
             console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
             console.log(doc.id + 'servicios' + doc.data().servicios)
             console.log(doc.id, operacion2)
+            let indexRed =pointsRed.indexOf('outline3' + doc.id)
+            let indexYellow = pointsYellow.indexOf('outline3' + doc.id)
+            let indexGreen = pointsGreen.indexOf('outline3' + doc.id)
+            if(indexRed > (-1)){
+              pointsRed.splice(indexRed, 1)
+            }else if(indexYellow > (-1)){
+              pointsYellow.splice(indexYellow, 1)
+            }else {
+              pointsGreen.splice(indexGreen, 1)
+            }
             if (operacion2 >= 50) {
-
+              pointsRed.push('outline3' + doc.id);
               map.current.setPaintProperty('outline3' + doc.id, 'fill-color', "#ff2121");
               map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
             } else if (operacion2 >= 25 & operacion2 < 50) {
-
+              pointsYellow.push('outline3' + doc.id);
               map.current.setPaintProperty('outline3' + doc.id, 'fill-color', '#ffee21');
               map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
             } else {
-
+              pointsGreen.push('outline3' + doc.id);
               map.current.setPaintProperty('outline3' + doc.id, 'fill-color', '#14f803');
               map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
@@ -287,63 +301,6 @@ function Mapas() {
     , [])
 
 
-  /* useEffect(() => {
-  map.current.on('load', () => {
-   // Add a data source containing GeoJSON data.
-   map.current.addSource('main', {
-     'type': 'geojson',
-     'data': {
-       'type': 'Feature',
-       'geometry': {
-         'type': 'Polygon',
-         
-         'coordinates': [
-           [
-           [ -74.0721293,4.5753983],
-           [-74.0721293, 4.5753983],
-           [ -74.092052,4.591825 ],
-           [-74.1133487,4.5976428],
-           [-74.1298364,4.6000383],
-           [-74.1356758,4.5966161],
-           [-74.1284624,4.575056],
-           [-74.1229665,4.5569177],
-           [-74.1222795,4.5209818],
-           [-74.1167836,4.4959968],
-           [-74.0951435,4.4939432],
-           [-74.0820907,4.5086606],
-           [-74.0810602,4.5333029],
-           [-74.0838081,4.5521263],
-           [-74.0724728,4.5757405]
-         ]
-       ]
-       }
-     }
-   });
-   map.current.addLayer({
-     'id': 'outline1',
-     'type': 'fill',
-     'source': 'main', // reference the data source
-     'layout': {},
-     'paint': {
-       'fill-color': '#ff0000', // blue color fill
-       'fill-opacity': 0.5
-     }
-   });
-   // Add a black outline around the polygon.
-   map.current.addLayer({
-     'id': 'outline2',
-     'type': 'line',
-     'source': 'main',
-     'layout': {},
-     'paint': {
-       'line-color': '#33ff6e',
-       'line-width': 3
-     }
-   });
-  });
-  }, []);  
-  */
-
   const logout = () => {
     auth.signOut()
       .then(() => {
@@ -352,40 +309,32 @@ function Mapas() {
   }
 
   const history = useHistory();
-  const mostrarAlerta = () => {
-
-
-    Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: 'Se han enviado alerta de alta demanda',
-      showConfirmButton: false,
-      timer: 3500
-    })
-  }
-
 
   return (
     <div>
       <div className='logoMapa'>
         <img src={logotype} alt="logotype" width='200px' />
+          <div className='alert'>
         <div>
           <h3>Bog-Col</h3>
           <h3>Ciudad</h3>
-          </div>
-          <Alert severity="error">
-            <AlertTitle></AlertTitle>
-            <strong></strong>
-          </Alert>
-          <Alert severity="warning">
-            <AlertTitle></AlertTitle>
-            <strong></strong>
-          </Alert>
-          <Alert severity="success">
-           <strong></strong>
-          </Alert>
-        <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
+        </div>
+      
+        <Alert severity="error">
+          <AlertTitle></AlertTitle>
+          <strong><h3 onChange={() => setPointsRed(pointsRed)}> {pointsRed.length}</h3></strong>
+        </Alert>
+        <Alert severity="warning">
+          <AlertTitle></AlertTitle>
+          <strong> <h3 onChange={() => setPointsYellow(pointsYellow)}> {pointsYellow.length}</h3></strong>
+        </Alert>
+        <Alert severity="success">
+          <strong><h3 onChange={() => setPointsGreen(pointsGreen)}> {pointsGreen.length}</h3></strong>
+        </Alert>
+        
         <ReactWhatsapp number="+573004305325" message="Alerta de zona" element={Button} >Enviar Alerta</ReactWhatsapp>
+        <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
+        </div>
       </div>
       <div ref={mapContainer} className="map-container">
         <h4 className="sidebar">
