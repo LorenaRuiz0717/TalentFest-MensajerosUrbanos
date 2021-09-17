@@ -5,7 +5,7 @@ import SignIn from './loginIn'
 import Mapas from './mapas'
 import { AuthProvider } from './firebase/firebaseAuth';
 
-// import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './PrivateRoute';
 
 const App = () => {
 
@@ -13,7 +13,7 @@ const App = () => {
    <AuthProvider>
       <Router>
         <Route exact  path='/' component={SignIn} />
-        <Route path='/Monitoreo' component={Mapas} />
+        <PrivateRoute path='/Monitoreo' component={Mapas} />
       </Router>
      </AuthProvider> 
   );
