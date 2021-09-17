@@ -53,7 +53,7 @@ function SignIn({ history }) {
   }, [history]);
 
   const { currentUser } = useContext(AuthContext);
-  
+
   if(currentUser){
     return <Redirect to='/Monitoreo' />;
   }
@@ -84,7 +84,7 @@ function SignIn({ history }) {
               }}
             >
               {/*<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> 
+            {/* <LockOutlinedIcon />
           </Avatar>*/}
               <Typography component="h1" variant="h5">
                 Iniciar Sesion
@@ -105,7 +105,7 @@ function SignIn({ history }) {
                   required
                   fullWidth
                   name="password"
-                  label="Hola"
+                  label="password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
