@@ -74,18 +74,8 @@ function Mapas() {
         snapshot.docChanges().forEach((change) => {
           console.log(change)
           const doc = change.doc
-          if (change.type !=="added") {
-          const maxZoom = map.current.getZoom();
-          const center = map.current.getCenter();
-          map.current.remove()
-          map.current = new mapboxgl.Map({
-            container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: center,
-            zoom: maxZoom,
-          });
-          }
-          // if (change.type === "added") {
+        
+          if (change.type === "added") {
             /* console.log("Doc´foreach ",doc.id); */
             let data = [];
             doc.data().poligono.forEach((coordenada) => {
@@ -198,7 +188,7 @@ function Mapas() {
 
                 });
             }
-            map.current.on('click', 'outline3' + doc.id, (e) => {
+            map.current.on( 'click', 'outline3' + doc.id, (e) => {
               console.log(e.lngLat.lat)
               console.log(e.lngLat.lng)
               // Copy coordinates array.
@@ -218,60 +208,60 @@ function Mapas() {
                 .addTo(map.current);
             });
 
-          // } else if (change.type === "modified") {
-          //   console.log('modified')
-          //   let data = [];
-          //   doc.data().poligono.forEach((coordenada) => {
-          //     let cord = [];
-          //     let latitude = coordenada.latitude;
-          //     let longitude = coordenada.longitude;
-          //     cord.push(latitude);
-          //     cord.push(longitude);
-          //     data.push(cord)
+          } else if (change.type === "modified") {
+            console.log('modified')
+            let data = [];
+            doc.data().poligono.forEach((coordenada) => {
+              let cord = [];
+              let latitude = coordenada.latitude;
+              let longitude = coordenada.longitude;
+              cord.push(latitude);
+              cord.push(longitude);
+              data.push(cord)
 
-          //   });
-          //   if (map.current.getSource('maine' + doc.id)) {
-          //     // map.current.removeLayer('maine' + doc.id)
-          //     map.current.getSource('maine' + doc.id).setData(
-          //       {
-          //         'type': 'FeatureCollection',
-          //         "features": [{
-          //           "type": "Feature",
-          //           "geometry": {
-          //             "type": "Polygon",
-          //             "coordinates": [data]
-          //           }
-          //         }]
-          //       });
-          //   }
-          //   let mensajeros = doc.data().mensajeros;
-          //   let servicios = doc.data().servicios;
-          //   /* let operacion = (1-(servicios/mensajeros));
-          //   let operacion2 = -(100*operacion); */
-          //   let operacion2 = ((servicios / mensajeros) * 100);
-          //   console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
-          //   console.log(doc.id + 'servicios' + doc.data().servicios)
-          //   console.log(doc.id, operacion2)
-          //   if (operacion2 >= 50) {
+            });
+            if (map.current.getSource('maine' + doc.id)) {
+              // map.current.removeLayer('maine' + doc.id)
+              map.current.getSource('maine' + doc.id).setData(
+                {
+                  'type': 'FeatureCollection',
+                  "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                      "type": "Polygon",
+                      "coordinates": [data]
+                    }
+                  }]
+                });
+            }
+            let mensajeros = doc.data().mensajeros;
+            let servicios = doc.data().servicios;
+            /* let operacion = (1-(servicios/mensajeros));
+            let operacion2 = -(100*operacion); */
+            let operacion2 = ((servicios / mensajeros) * 100);
+            console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
+            console.log(doc.id + 'servicios' + doc.data().servicios)
+            console.log(doc.id, operacion2)
+            if (operacion2 >= 50) {
 
-          //     map.current.setPaintProperty('maine' + doc.id, 'fill-color', "#ff2121");
-          //     map.current.setPaintProperty('maine' + doc.id, 'fill-opacity', 0.5);
-
-
-          //   } else if (operacion2 >= 25 & operacion2 < 50) {
-
-          //     map.current.setPaintProperty('maine' + doc.id, 'fill-color', '#ffee21');
-          //     map.current.setPaintProperty('maine' + doc.id, 'fill-opacity', 0.5);
+              map.current.setPaintProperty('outline3' + doc.id, 'fill-color', "#ff2121");
+              map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
-          //   } else {
+            } else if (operacion2 >= 25 & operacion2 < 50) {
 
-          //     map.current.setPaintProperty('maine' + doc.id, 'fill-color', '#14f803');
-          //     map.current.setPaintProperty('maine' + doc.id, 'fill-opacity', 0.5);
+              map.current.setPaintProperty('outline3' + doc.id, 'fill-color', '#ffee21');
+              map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
 
 
-          //   }
-          // }
+            } else {
+
+              map.current.setPaintProperty('outline3' + doc.id, 'fill-color', '#14f803');
+              map.current.setPaintProperty('outline3' + doc.id, 'fill-opacity', 0.5);
+
+
+            }
+          }
         });
         return () => coorden()
       })
