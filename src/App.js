@@ -11,7 +11,7 @@ const App = () => {
 
   return (
    <AuthProvider>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Route exact  path='/' component={SignIn} />
         <PrivateRoute path='/Monitoreo' component={Mapas} />
       </Router>
