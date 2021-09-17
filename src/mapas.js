@@ -2,6 +2,8 @@ import './App.css';
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import { db } from './firebase/firebaseConfig';
+import logotype from './assets/logotype.png'
+import Button from '@mui/material/Button';
 
 function Mapas() {
   const mapContainer = useRef(null);
@@ -11,6 +13,7 @@ function Mapas() {
   const [zoom, setZoom] = useState(11);
 
   /* const callback = (snapshot) => {
+  const callback = (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
         console.log("Add mapa", change.doc.data());
@@ -74,50 +77,35 @@ function Mapas() {
         snapshot.docChanges().forEach((change) => {
           console.log(change)
           const doc = change.doc
-          if (change.type !=="added") {
-          const maxZoom = map.current.getZoom();
-          const center = map.current.getCenter();
-          map.current.remove()
-          map.current = new mapboxgl.Map({
-            container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: center,
-            zoom: maxZoom,
-          });
+          if (change.type !== "added") {
+            const maxZoom = map.current.getZoom();
+            const center = map.current.getCenter();
+            map.current.remove()
+            map.current = new mapboxgl.Map({
+              container: mapContainer.current,
+              style: 'mapbox://styles/mapbox/streets-v11',
+              center: center,
+              zoom: maxZoom,
+            });
           }
           // if (change.type === "added") {
-            /* console.log("Doc´foreach ",doc.id); */
-            let data = [];
-            doc.data().poligono.forEach((coordenada) => {
-              let cord = [];
-              let latitude = coordenada.latitude;
-              let longitude = coordenada.longitude;
-              cord.push(latitude);
-              cord.push(longitude);
-              data.push(cord)
+          /* console.log("Doc´foreach ",doc.id); */
+          let data = [];
+          doc.data().poligono.forEach((coordenada) => {
+            let cord = [];
+            let latitude = coordenada.latitude;
+            let longitude = coordenada.longitude;
+            cord.push(latitude);
+            cord.push(longitude);
+            data.push(cord)
 
-            })
-            //console.log(JSON.stringify(data))
-            /* console.log('maine' + doc.id); */
-            if (map.current.getSource('maine' + doc.id)) {
-              // map.current.removeLayer('maine' + doc.id)
-              map.current.getSource('maine' + doc.id).setData(
-                {
-                  'type': 'geojson',
-                  'data': {
-                    'type': 'Feature',
-                    'geometry': {
-                      'type': 'Polygon',
-                      'coordinates': [
-                        data
-                      ]
-                    }
-                  }
-                });
-            }
-            else {
-
-              map.current.addSource('maine' + doc.id, {
+          })
+          //console.log(JSON.stringify(data))
+          /* console.log('maine' + doc.id); */
+          if (map.current.getSource('maine' + doc.id)) {
+            // map.current.removeLayer('maine' + doc.id)
+            map.current.getSource('maine' + doc.id).setData(
+              {
                 'type': 'geojson',
                 'data': {
                   'type': 'Feature',
@@ -129,94 +117,109 @@ function Mapas() {
                   }
                 }
               });
-            }
+          }
+          else {
 
-
-            let mensajeros = doc.data().mensajeros;
-            let servicios = doc.data().servicios;
-            /* let operacion = (1-(servicios/mensajeros));
-            let operacion2 = -(100*operacion); */
-            let operacion2 = ((servicios / mensajeros) * 100);
-            console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
-            console.log(doc.id + 'servicios' + doc.data().servicios)
-            console.log(doc.id, operacion2)
-            if (operacion2 >= 50) {
-
-              map.current.addLayer({
-                
-                'id': 'outline3' + doc.id,
-                'type': 'fill',
-                'source': 'maine' + doc.id, // reference the data source
-                'layout': {},
-                'paint': {
-                  'fill-color': "#ff2121", // blue color fill
-                  'fill-opacity': 0.5
+            map.current.addSource('maine' + doc.id, {
+              'type': 'geojson',
+              'data': {
+                'type': 'Feature',
+                'geometry': {
+                  'type': 'Polygon',
+                  'coordinates': [
+                    data
+                  ]
                 }
-              });
-
-
-            } else if (operacion2 >= 25 & operacion2 < 50) {
-
-              map.current.addLayer({
-                'id': 'outline3' + doc.id,
-                'type': 'fill',
-                'source': 'maine' + doc.id, // reference the data source
-                'layout': {},
-                'paint': {
-                  'fill-color': '#ffee21', // blue color fill
-                  'fill-opacity': 0.5
-                }
-              });
-
-            } else {
-
-              map.current.addLayer({
-                'id': 'outline3' + doc.id,
-                'type': 'fill',
-                'source': 'maine' + doc.id, // reference the data source
-                'layout': {},
-                'paint': {
-                  'fill-color': '#14f803', // blue color fill
-                  'fill-opacity': 0.5
-                }
-              });
-
-
-
-            }
-            if (map.current.getLayer('maine' + doc.id)) {
-              map.current.getLayer('maine' + doc.id).setData(
-                {
-                  'id': 'outline4' + doc.id,
-                  'type': 'line',
-                  'source': 'maine' + doc.id,
-                  'layout': {},
-                  'paint': {
-                    'line-color': '#689309',
-                    'line-width': 1
-                  }
-
-                });
-            }
-            map.current.on('click', 'outline3' + doc.id, (e) => {
-              console.log(e.lngLat.lat)
-              console.log(e.lngLat.lng)
-              // Copy coordinates array.
-              const coordinates = [e.lngLat.lng, e.lngLat.lat];
-              const description = 'prueba';
-
-              // Ensure that if the map is zoomed out such that multiple
-              // copies of the feature are visible, the popup appears
-              // over the copy being pointed to.
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
               }
-
-              new mapboxgl.Popup()
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map.current);
             });
+          }
+
+
+          let mensajeros = doc.data().mensajeros;
+          let servicios = doc.data().servicios;
+          /* let operacion = (1-(servicios/mensajeros));
+          let operacion2 = -(100*operacion); */
+          let operacion2 = ((servicios / mensajeros) * 100);
+          console.log(doc.id + 'mensajeros' + doc.data().mensajeros)
+          console.log(doc.id + 'servicios' + doc.data().servicios)
+          console.log(doc.id, operacion2)
+          if (operacion2 >= 50) {
+
+            map.current.addLayer({
+
+              'id': 'outline3' + doc.id,
+              'type': 'fill',
+              'source': 'maine' + doc.id, // reference the data source
+              'layout': {},
+              'paint': {
+                'fill-color': "#ff2121", // blue color fill
+                'fill-opacity': 0.5
+              }
+            });
+
+
+          } else if (operacion2 >= 25 & operacion2 < 50) {
+
+            map.current.addLayer({
+              'id': 'outline3' + doc.id,
+              'type': 'fill',
+              'source': 'maine' + doc.id, // reference the data source
+              'layout': {},
+              'paint': {
+                'fill-color': '#ffee21', // blue color fill
+                'fill-opacity': 0.5
+              }
+            });
+
+          } else {
+
+            map.current.addLayer({
+              'id': 'outline3' + doc.id,
+              'type': 'fill',
+              'source': 'maine' + doc.id, // reference the data source
+              'layout': {},
+              'paint': {
+                'fill-color': '#14f803', // blue color fill
+                'fill-opacity': 0.5
+              }
+            });
+
+
+
+          }
+          if (map.current.getLayer('maine' + doc.id)) {
+            map.current.getLayer('maine' + doc.id).setData(
+              {
+                'id': 'outline4' + doc.id,
+                'type': 'line',
+                'source': 'maine' + doc.id,
+                'layout': {},
+                'paint': {
+                  'line-color': '#689309',
+                  'line-width': 1
+                }
+
+              });
+          }
+          map.current.on('click', 'outline3' + doc.id, (e) => {
+            console.log(e.lngLat.lat)
+            console.log(e.lngLat.lng)
+            // Copy coordinates array.
+            const coordinates = [e.lngLat.lng, e.lngLat.lat];
+            const description = 'prueba';
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+              .setLngLat(coordinates)
+              .setHTML(description)
+              .addTo(map.current);
+          });
 
           // } else if (change.type === "modified") {
           //   console.log('modified')

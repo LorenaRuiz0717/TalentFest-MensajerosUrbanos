@@ -1,7 +1,16 @@
+.logoMapa {
+  display: flex;
+  box-shadow: 0.2em 0.3em 0.3em rgb(0, 0, 0);
+  border: 0.1em solid #d6d6d6;
+  border-radius: 1em;
+  margin: 5px;
+  justify-content: space-between;
+  align-content: center;
+}
 
 .map-container {
-  height:100vh;
-  }
+  height: 100vh;
+}
 
   .sidebar {
     background-color: rgba(35, 55, 75, 0.9);
