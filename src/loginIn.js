@@ -52,7 +52,7 @@ function SignIn({ history }) {
               }}
             >
               <Typography component="h1" variant="h5">
-                Iniciar Sesion
+                Iniciar Sesiòn
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
                 <TextField
