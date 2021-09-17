@@ -4,11 +4,16 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import { db } from './firebase/firebaseConfig';
 import logotype from './assets/logotype.png'
 import Button from '@mui/material/Button';
+import AlertTitle from '@mui/material/AlertTitle'
+import Alert from '@mui/material/Alert'
 import Swal from 'sweetalert2';
 import Box from './box.png'
 import Helmet from './Helmet.png'
 import { auth } from './firebase/firebaseConfig';
 import { useHistory } from 'react-router-dom'
+import ReactWhatsapp from 'react-whatsapp';
+
+
 
 function Mapas() {
   const mapContainer = useRef(null);
@@ -364,9 +369,23 @@ function Mapas() {
     <div>
       <div className='logoMapa'>
         <img src={logotype} alt="logotype" width='200px' />
-        <Button variant="outlined" sx={{ mt: 2, mb: 2 }} color="error" onClick={() => mostrarAlerta()} >Enviar Mensajes</Button>
-        {/* <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={() => mostrarAlerta()}>Enviar Mensajes</Button> */}
+        <div>
+          <h3>Bog-Col</h3>
+          <h3>Ciudad</h3>
+          </div>
+          <Alert severity="error">
+            <AlertTitle></AlertTitle>
+            <strong></strong>
+          </Alert>
+          <Alert severity="warning">
+            <AlertTitle></AlertTitle>
+            <strong></strong>
+          </Alert>
+          <Alert severity="success">
+           <strong></strong>
+          </Alert>
         <Button variant="contained" sx={{ mt: 2, mb: 2 }} onClick={logout}>Cerrar Sesion</Button>
+        <ReactWhatsapp number="+573004305325" message="Alerta de zona" element={Button} >Enviar Alerta</ReactWhatsapp>
       </div>
       <div ref={mapContainer} className="map-container">
         <h4 className="sidebar">
